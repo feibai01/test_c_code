@@ -1,0 +1,11 @@
+#include<stdio.h>
+int main()
+{
+	int a,b,c,number;
+	number=369;
+	a=number/100;
+	b=(number-a*100)/10;
+	c=number-a*100-b*10;
+	printf("·´ĞòÊıÊÇ£º%d%d%d \n",c,b,a);
+	return 0;
+ } 

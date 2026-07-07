@@ -1,0 +1,13 @@
+{
+    "files.encoding": "utf8",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "args": [
+                "-NoExit",
+                "[Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding('GB2312')"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell"
+}
