@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <windows.h>
 int max,min;   
 void MAX1(int a,int b)
 {
@@ -34,18 +35,19 @@ int MIN2(int a,int b,int h)
 
 int main()
 {
+    SetConsoleOutputCP(65001);
     int m,n,h;
-    printf("ÊäÈëÁ½¸öÕûÊý£º");
+    printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     scanf("%d %d",&m,&n);
 
     h=MAX2(m,n);
     int l=MIN2(m,n,h);
-    printf("2 ×î´ó¹«Ô¼Êý£º%d ×îÐ¡¹«±¶Êý£º%d\n\n",h,l);
+    printf("2 ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½%d ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½%d\n\n",h,l);
 
    
     MAX1(m,n);
     MIN1(m,n);
-    printf("1 ×î´ó¹«Ô¼Êý£º%d ×îÐ¡¹«±¶Êý£º%d",max,min);
+    printf("1 ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½%d ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½%d",max,min);
 
     return 0;
 }

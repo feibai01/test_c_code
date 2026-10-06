@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <windows.h>
 struct Student {
+    SetConsoleOutputCP(65001);
     int score[3];
     float avg;
 };
@@ -27,6 +29,6 @@ int main(){
     }
     fclose(fp2);
 
-    printf("ÅÅÐòÍê³É£¬Êý¾Ý´æÈëstu_sort\n");
+    printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½stu_sort\n");
     return 0;
 }

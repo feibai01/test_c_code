@@ -2,36 +2,38 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include <windows.h>
 int main(){
+	SetConsoleOutputCP(65001);
 	srand((unsigned)time(NULL));
 	int N;
 	char s[10];
-	printf("ÓÎÏ·²Ëµ¥\n");
-	printf("*******²ÂÊýÓÎÏ·*******\n");
-	printf("³õ¼¶ £¨²Â0¡¢1¡¢2ÖÐµÄÊý£©\n");
-	printf("ÖÐ¼¶£¨²Â0¡¢1¡¢2¡¢3¡¢4ÖÐµÄÊý£©\n");
-	printf("¸ß¼¶£¨²Â0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢6ÖÐµÄÊý£©\n");
-	printf("ÇëÑ¡ÔñÓÎÏ·µÈ¼¶:");
+	printf("ï¿½ï¿½Ï·ï¿½Ëµï¿½\n");
+	printf("*******ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·*******\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½1ï¿½ï¿½2ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½\n");
+	printf("ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½1ï¿½ï¿½2ï¿½ï¿½3ï¿½ï¿½4ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½\n");
+	printf("ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½1ï¿½ï¿½2ï¿½ï¿½3ï¿½ï¿½4ï¿½ï¿½5ï¿½ï¿½6ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½\n");
+	printf("ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Ï·ï¿½È¼ï¿½:");
 	scanf("%s",&s);
-	if(strcmp(s,"³õ¼¶")==0)N=2;
-	else if(strcmp(s,"ÖÐ¼¶")==0)N=4;
-	else if(strcmp(s,"¸ß¼¶")==0)N=6;
+	if(strcmp(s,"ï¿½ï¿½ï¿½ï¿½")==0)N=2;
+	else if(strcmp(s,"ï¿½Ð¼ï¿½")==0)N=4;
+	else if(strcmp(s,"ï¿½ß¼ï¿½")==0)N=6;
 	else {
-	printf("Ñ¡Ôñ´íÎó");
+	printf("Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½");
 	return 0;
 	}
 	int n=rand()%N+1;
 	int g,count=2;
 	for(count;count>=0;count--){
-		printf("ÇëÊäÈëÄã²ÂµÄÊý:");
+		printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½:");
 		scanf("%d",&g);
 		if(count>0){
 			if(g==n){
-				printf("ÄãÕæ°ô£¡\n");
+				printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 				break;
 				}
 			else
-				printf("²Â´íÁË£¬Äã»¹ÓÐ%d´Î»ú»á\n",count); 
+				printf("ï¿½Â´ï¿½ï¿½Ë£ï¿½ï¿½ã»¹ï¿½ï¿½%dï¿½Î»ï¿½ï¿½ï¿½\n",count); 
 		}
 		else
 			printf("Game Over");

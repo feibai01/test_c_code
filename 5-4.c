@@ -1,5 +1,7 @@
 #include<stdio.h>
+#include <windows.h>
 int main(){
+	SetConsoleOutputCP(65001);
 	int n,num,s=0;
 	while(1){
 		scanf("%d",&n);
@@ -11,9 +13,9 @@ int main(){
 			num /=10;
 		}
 		if(s==n){
-			printf("ÊÇ");
+			printf("ï¿½ï¿½");
 		}else{
-			printf("·ñ");
+			printf("ï¿½ï¿½");
 		}
 	}
 	return 0;

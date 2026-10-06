@@ -1,13 +1,15 @@
 #include<stdio.h>
+#include <windows.h>
 int main()
 {
+	SetConsoleOutputCP(65001);
 	char a;
 	scanf("%c",&a);
 	if (65<=a&&a<=90)
-		printf("´óÐ´×ÖÄ¸");
+		printf("ï¿½ï¿½Ð´ï¿½ï¿½Ä¸");
 	else if (97<=a&&a<=122)
-		printf("Ð¡Ð´×ÖÄ¸");
+		printf("Ð¡Ð´ï¿½ï¿½Ä¸");
 	else
-		printf("·Ç×ÖÄ¸×Ö·û");
+		printf("ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½Ö·ï¿½");
 	return 0;
  } 

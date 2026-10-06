@@ -1,15 +1,17 @@
-//冒泡排序
+//冒锟斤拷锟斤拷锟斤拷
 #include<stdio.h>
+#include <windows.h>
 int main(){
+    SetConsoleOutputCP(65001);
     int a[100],i,j,n,temp;
 
     while(scanf("%d",&n) == 1){
-        // 读取n个整数
+        // 锟斤拷取n锟斤拷锟斤拷锟斤拷
         for(i=0;i<n;i++){
             scanf("%d",&a[i]);
         }
 
-        // 冒泡排序（从小到大）
+        // 冒锟斤拷锟斤拷锟津（达拷小锟斤拷锟斤拷
         for(i=0;i<n-1;i++){
             for(j=0;j<n-1-i;j++){
                 if(a[j] > a[j+1]){
@@ -20,7 +22,7 @@ int main(){
             }
         }
 
-        // 按题目要求输出：每个数后带空格，每组占一行
+        // 锟斤拷锟斤拷目要锟斤拷锟斤拷锟斤拷锟矫匡拷锟斤拷锟斤拷锟斤拷锟秸革拷每锟斤拷占一锟斤拷
         for(i=0;i<n;i++){
             printf("%d ",a[i]);
         }

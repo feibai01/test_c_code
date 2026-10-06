@@ -1,6 +1,8 @@
 #include<stdio.h>
+#include <windows.h>
 int main()
 {
+	SetConsoleOutputCP(65001);
 	int x;
 	scanf("%d",&x);
 	if(x%4==0 && x%100!=0)

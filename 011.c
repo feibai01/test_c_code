@@ -1,15 +1,17 @@
 #include<stdio.h>
+#include <windows.h>
 int main()
 {
+	SetConsoleOutputCP(65001);
 	int d=2019%7;
 	switch(d){
-		case 0: printf("ÐÇÆÚÈÕ");break;
-		case 1: printf("ÐÇÆÚÒ»");break;
-		case 2: printf("ÐÇÆÚ¶þ");break;
-		case 3: printf("ÐÇÆÚÈý");break;
-		case 4: printf("ÐÇÆÚËÄ");break;
-		case 5: printf("ÐÇÆÚÎå");break;
-		case 6: printf("ÐÇÆÚÁù");break;
+		case 0: printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");break;
+		case 1: printf("ï¿½ï¿½ï¿½ï¿½Ò»");break;
+		case 2: printf("ï¿½ï¿½ï¿½Ú¶ï¿½");break;
+		case 3: printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");break;
+		case 4: printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");break;
+		case 5: printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");break;
+		case 6: printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");break;
 		return 0; 
 	}
 }

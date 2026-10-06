@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <windows.h>
 int letter=0,digit=0,space=0,other=0;
 void Count(char s[])
 {
@@ -36,16 +37,17 @@ void Count2(char s[],int cnt[])
 
 int main()
 {
+    SetConsoleOutputCP(65001);
     char str[100];
     int res[4];
-    printf("ÇëÊäÈë×Ö·û´®£º");
+    printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½");
     gets(str);
     
     Count(str);
-    printf("Count ×ÖÄ¸:%d Êý×Ö:%d ¿Õ¸ñ:%d ÆäËû:%d\n\n",letter,digit,space,other);
+    printf("Count ï¿½ï¿½Ä¸:%d ï¿½ï¿½ï¿½ï¿½:%d ï¿½Õ¸ï¿½:%d ï¿½ï¿½ï¿½ï¿½:%d\n\n",letter,digit,space,other);
 
     Count2(str,res);
-    printf("Count1 ×ÖÄ¸:%d Êý×Ö:%d ¿Õ¸ñ:%d ÆäËû:%d\n",res[0],res[1],res[2],res[3]);
+    printf("Count1 ï¿½ï¿½Ä¸:%d ï¿½ï¿½ï¿½ï¿½:%d ï¿½Õ¸ï¿½:%d ï¿½ï¿½ï¿½ï¿½:%d\n",res[0],res[1],res[2],res[3]);
 
     return 0;
 }

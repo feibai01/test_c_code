@@ -1,6 +1,8 @@
 #include<stdio.h>
+#include <windows.h>
 int main()
 {
+	SetConsoleOutputCP(65001);
 	char s;
 	int a,b;
 	scanf("%c %d %d",&s,&a,&b);
@@ -12,9 +14,9 @@ int main()
 			if(b!=0)
 				{printf("%d\n",a/b);}
 			else
-				{printf("³ıÊı²»ÄÜÎª0\n");} 
+				{printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª0\n");} 
 			break;
-		default:printf("ÊäÈë´íÎó\n");
+		default:printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 		
 	}
 	return 0;

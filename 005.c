@@ -1,18 +1,20 @@
 #include<stdio.h> 
+#include <windows.h>
 int main()
 {
+	SetConsoleOutputCP(65001);
 	int w;
 	float m; 
 	scanf("%d",&w);
 	if(w<=5)
-		printf("运费10元");
+		printf("锟剿凤拷10元");
 	else if(w<=10)
 		{
 		m=10+(w-5)*1.5;
-		printf("运费%f元",m);}
+		printf("锟剿凤拷%f元",m);}
 	else
 		{
 		m=17.5+(w-10)*2;
-		printf("运费%f元",m);}
+		printf("锟剿凤拷%f元",m);}
 	return 0;
 }

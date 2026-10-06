@@ -1,5 +1,7 @@
 #include<stdio.h>
+#include <windows.h>
 int main(){
+	SetConsoleOutputCP(65001);
 	int nar1[3][4];
 	int i,j,k;
 	int max,col;
@@ -26,10 +28,10 @@ int main(){
 			}
 		}
 		if(flag==1){
-			printf("°°µã£ºµÚ%dÐÐ£¬µÚ%dÁÐ£¬Öµ=%d\n",i+1,col+1,max);
+			printf("ï¿½ï¿½ï¿½ã£ºï¿½ï¿½%dï¿½Ð£ï¿½ï¿½ï¿½%dï¿½Ð£ï¿½Öµ=%d\n",i+1,col+1,max);
 			return 0;
 		}
 	}
-	printf("Ã»ÓÐ°°µã\n");
+	printf("Ã»ï¿½Ð°ï¿½ï¿½ï¿½\n");
 	return 0;
 }

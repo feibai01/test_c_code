@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <windows.h>
 int main() {
+    SetConsoleOutputCP(65001);
     float f = 80, c;
     c = 5 * (f - 32) / 9;
-    printf("%.0f华氏度对应的摄氏度为%.2f\n", f, c);
+    printf("%.0f锟斤拷锟较度讹拷应锟斤拷锟斤拷锟较讹拷为%.2f\n", f, c);
     return 0;
 }

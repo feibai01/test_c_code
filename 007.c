@@ -1,13 +1,15 @@
 #include<stdio.h>
+#include <windows.h>
 int main()
 {
+	SetConsoleOutputCP(65001);
 	int s;
 	scanf("%d",&s);
 	if(s>=0&&s<=59){
-	printf("²»¼°¸ñ");}
-	else if(s>=60&&s<70){printf("¼°¸ñ");}
-	else if (s>=70&&s<80){printf("ÖÐµÈ");}
-	else if (s>=80&&s<90){printf("Á¼ºÃ");}
-	else {printf("ÓÅÐã");}
+	printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");}
+	else if(s>=60&&s<70){printf("ï¿½ï¿½ï¿½ï¿½");}
+	else if (s>=70&&s<80){printf("ï¿½Ðµï¿½");}
+	else if (s>=80&&s<90){printf("ï¿½ï¿½ï¿½ï¿½");}
+	else {printf("ï¿½ï¿½ï¿½ï¿½");}
 	return 0;
  } 

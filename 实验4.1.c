@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <windows.h>
 struct Student{
+    SetConsoleOutputCP(65001);
     int score[3];
     float avg;
 };
@@ -9,7 +11,7 @@ int main(void){
     int i,j;
     float sum;
     for(i=0;i<5;i++){
-        printf("ÇëÊäÈëµÚ%d¸öÑ§Éú3ÃÅ³É¼¨£º",i+1);
+        printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½%dï¿½ï¿½Ñ§ï¿½ï¿½3ï¿½Å³É¼ï¿½ï¿½ï¿½",i+1);
         scanf("%d %d %d",&st[i].score[0],&st[i].score[1],&st[i].score[2]);
         sum=0;
         for(j=0;j<3;j++)
@@ -17,7 +19,7 @@ int main(void){
         st[i].avg = sum/3.0f;
     }
     if((fp=fopen("stud","w"))==NULL){
-        printf("ÎÄ¼þ´ò¿ªÊ§°Ü£¡\n");
+        printf("ï¿½Ä¼ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½\n");
         return 1;
     }
     for(i=0;i<5;i++){

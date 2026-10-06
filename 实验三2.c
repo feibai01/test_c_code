@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <windows.h>
 void fun(int n)
 {
     if(n<0)
@@ -29,12 +30,13 @@ void Nofun(int n)
 
 int main()
 {
+    SetConsoleOutputCP(65001);
     int num;
-    printf("ÇëÊäÈëÕûÊý£º");
+    printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     scanf("%d",&num);
-    printf("µÝ¹éÊä³ö£º");
+    printf("ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     fun(num);
-    printf("\n·ÇµÝ¹éÊä³ö£º");
+    printf("\nï¿½ÇµÝ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     Nofun(num);
     return 0;
 }

@@ -5,9 +5,33 @@
             "source": "PowerShell",
             "args": [
                 "-NoExit",
-                "[Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding('GB2312')"
+                "-Command",
+                "[Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding(65001)"
             ]
+        },
+        "Git Bash": {
+            "source": "Git Bash"
         }
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell"
+    "terminal.integrated.defaultProfile.windows": "Git Bash"
+
+    "configurations": [
+    {
+        "name": "Win32",
+        "includePath": [
+            "${workspaceFolder}/**"
+        ],
+        "defines": [
+            "_DEBUG",
+            "UNICODE",
+            "_UNICODE"
+        ],
+        "compilerPath": "D:/tools/Programming/C/mingw64/bin/gcc.exe",
+        "cStandard": "c11",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "windows-gcc-x64",
+        "buildTask": "none"
+    }
+]
+
 }
