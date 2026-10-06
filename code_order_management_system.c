@@ -3,13 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#pragma comment(lib,"ws2_32.lib")
 
-//==================== 【模块1：数据结构定义】 ====================
+
+
+// =====条件编译开关：开启=编译网页创意模组；注释掉=无网页代码，纯控制台=====
+#define ENABLE_CREATIVE_HTTP_HTML
+
 #define MAX_ORDER 8500
 #define STR_LEN 64
 #define HTTP_PORT 8080
 
+//==================== 【模块1：数据结构定义 】 ====================
 typedef struct {
     char order_id[STR_LEN];
     char order_date[STR_LEN];
@@ -28,7 +32,7 @@ typedef struct {
 Order order_list[MAX_ORDER];
 int order_cnt = 0;
 
-//==================== 【模块2：CSV文件读写】 ====================
+//==================== 【模块2：CSV文件读写 】 ====================
 int load_csv(const char *filepath)
 {
     FILE *fp = fopen(filepath, "r");
@@ -89,7 +93,7 @@ int save_csv(const char *filepath)
     return 0;
 }
 
-//==================== 【模块3：业务逻辑功能模块 只计算，不输出】 ====================
+//==================== 【模块3：业务逻辑功能模块 】 ====================
 //按订单ID查询 0成功 -1未找到
 int query_by_orderid(char *oid, Order *res)
 {
@@ -179,7 +183,7 @@ int filter_by_date(char *start, char *end, Order out[], int max_out)
     return cnt;
 }
 
-//==================== 【模块4 主控调度模块 】 ====================
+//==================== 【模块4：基础主控&控制台交互 】 ====================
 //控制台打印单条订单
 void print_one_ord(Order o)
 {
@@ -290,7 +294,14 @@ void run_console_menu(void)
     }
 }
 
-//解析GET参数
+//==================== 创意拓展模组：Socket‑HTTP网页（条件编译包裹） ====================
+#ifdef ENABLE_CREATIVE_HTTP_HTML
+//函数原型声明，解决隐式声明报错
+void get_param(char *url, char *key, char *val);
+void build_stat_html(char *html, const char *msg);
+void build_page_html(char *html, int page, const char *msg);
+
+//解析GET请求url参数
 void get_param(char *url, char *key, char *val)
 {
     char *p = strstr(url, key);
@@ -299,36 +310,121 @@ void get_param(char *url, char *key, char *val)
     p += strlen(key);
     while (*p != 0 && *p != '&' && *p != ' ')
     {
-        *val++ = *p++;
+        *val = *p;
+        val++;
+        p++;
     }
     *val = '\0';
 }
 
-/**
- * build_html：只负责拼接网页，参数全部由上层http_run传入
- * html：输出缓冲区
- * op：操作指令
- * msg：提示信息
- */
-void build_html(char *html, const char *op, const char *msg)
+//类别统计页面（全部居中）
+void build_stat_html(char *html, const char *msg)
 {
     html[0] = '\0';
-    strcat(html, "<html><head><meta charset='utf-8'><title>订单管理系统</title></head>");
-    strcat(html, "<body><h2>订单管理系统【网页演示模式】</h2>");
+    strcat(html, "<html><head><meta charset='utf-8'><title>订单类别统计</title>");
+    strcat(html, "<style>");
+    strcat(html, "body{width:90%%;max-width:1200px;margin:20px auto;}");
+    strcat(html, "table{border-collapse:collapse;width:100%%;}");
+    strcat(html, "td,th{padding:4px 8px;text-align:center;}");
+    strcat(html, "</style></head>");
+    strcat(html, "<body><h2 style='text-align:center;'>订单类别统计【网页演示模式】</h2>");
+    if(msg && strlen(msg)>0)
+    {
+        char tmp[512];
+        sprintf(tmp,"<div style='color:red;text-align:center'>%s</div><br>",msg);
+        strcat(html,tmp);
+    }
+    strcat(html,"<div style='text-align:center'><a href='?page=1'><button>返回订单分页列表</button></a></div><hr>");
+    strcat(html,"<table border='1'><tr><th>商品类别</th><th>订单数量</th></tr>");
+
+    typedef struct{
+        char cate[STR_LEN];
+        int cnt;
+    }StatItem;
+    StatItem stat[200];
+    int stat_cnt=0;
+    for(int i=0;i<order_cnt;i++)
+    {
+        int find=0;
+        for(int j=0;j<stat_cnt;j++)
+        {
+            if(strcmp(stat[j].cate, order_list[i].cate)==0)
+            {
+                stat[j].cnt++; find=1;break;
+            }
+        }
+        if(!find)
+        {
+            strcpy(stat[stat_cnt].cate, order_list[i].cate);
+            stat[stat_cnt].cnt=1;
+            stat_cnt++;
+        }
+    }
+    for(int i=0;i<stat_cnt;i++)
+    {
+        char row[512];
+        sprintf(row,"<tr><td>%s</td><td>%d</td></tr>",stat[i].cate,stat[i].cnt);
+        strcat(html,row);
+    }
+    strcat(html,"</table></body></html>");
+}
+
+
+//分页订单列表页面，一页50条，页面居中
+void build_page_html(char *html, int page, const char *msg)
+{
+    html[0] = '\0';
+    const int PAGE_SIZE = 50;
+    int total_page = (order_cnt + PAGE_SIZE - 1)/ PAGE_SIZE;
+    if(page <1) page=1;
+    if(page>total_page) page = total_page;
+    int start = (page-1)*PAGE_SIZE;
+    int end = start + PAGE_SIZE;
+    if(end>order_cnt) end = order_cnt;
+
+    strcat(html, "<html><head><meta charset='utf-8'><title>订单管理系统</title>");
+    strcat(html, "<style>");
+    strcat(html, "body{width:90%%;max-width:1200px;margin:20px auto;}");
+    strcat(html, "table{border-collapse:collapse;width:100%%;}");
+    strcat(html, "td,th{padding:4px 8px;text-align:center;}");
+    strcat(html, "</style></head>");
+    strcat(html, "<body>");
+    strcat(html, "<h2 style='text-align:center;'>订单管理系统【网页演示模式】</h2>");
     if (msg && strlen(msg) > 0)
     {
         char tmp[512];
-        sprintf(tmp, "<div style='color:red'>提示：%s</div><br>", msg);
+        sprintf(tmp, "<div style='color:red;text-align:center'>提示：%s</div><br>", msg);
         strcat(html, tmp);
     }
-    strcat(html, "<p>网页仅演示排序、保存；完整增删改查请切换控制台模式</p>");
-    strcat(html, "<a href='?op=sort'><button>按销售额降序排序</button></a> ");
-    strcat(html, "<a href='?op=save'><button>保存数据</button></a>");
-    strcat(html, "<hr><table border='1'>");
-    strcat(html, "<tr><th>订单ID</th><th>日期</th><th>用户ID</th><th>地区</th><th>产品</th><th>订单量</th><th>销售额</th></tr>");
+    strcat(html, "<p style='text-align:center'>网页仅演示排序、保存；完整增删改查请切换控制台模式</p>");
 
-    //展示前120条，防止html过大
-    for (int i = 0; i < order_cnt && i < 120; i++)
+    //功能按钮区域居中
+    strcat(html, "<div style='text-align:center'>");
+    strcat(html, "<a href='?op=sort'><button>按销售额降序排序</button></a> ");
+    strcat(html, "<a href='?op=save'><button>保存数据</button></a> ");
+    strcat(html, "<a href='?action=stat'><button>类别统计</button></a>");
+    strcat(html, "</div>");
+
+    //分页导航居中
+    char nav_buf[1024];
+    sprintf(nav_buf,"<hr><div style='text-align:center'>当前第%d页 / 总%d页，每页50条，总订单：%d条<br>",page,total_page,order_cnt);
+    strcat(html,nav_buf);
+    if(page>1){
+        char prev[256];
+        sprintf(prev,"<a href='?page=%d'><button>上一页</button></a> ",page-1);
+        strcat(html,prev);
+    }
+    if(page < total_page){
+        char next[256];
+        sprintf(next,"<a href='?page=%d'><button>下一页</button></a>",page+1);
+        strcat(html,next);
+    }
+    strcat(html,"</div><hr>");
+
+    //订单表格
+    strcat(html, "<table border='1'>");
+    strcat(html, "<tr><th>订单ID</th><th>日期</th><th>用户ID</th><th>地区</th><th>产品</th><th>订单量</th><th>销售额</th></tr>");
+    for (int i = start; i < end; i++)
     {
         char row[1024];
         sprintf(row, "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%d</td><td>%.2f</td></tr>",
@@ -337,54 +433,50 @@ void build_html(char *html, const char *op, const char *msg)
         strcat(html, row);
     }
     strcat(html, "</table>");
-    strcat(html, "<p>⚠网页仅演示，修改后点保存才写入csv；全部业务功能请使用控制台模式</p>");
+    strcat(html, "<p style='text-align:center'>⚠网页仅演示,修改后点保存才写入csv;全部业务功能请使用控制台模式</p>");
     strcat(html, "</body></html>");
 }
 
-//http服务循环
+
+//http服务主循环
 int http_run(void)
 {
-    WSADATA wsa;
-    WSAStartup(MAKEWORD(2, 2), &wsa);
+    WSADATA wsaData;
+    WSAStartup(MAKEWORD(2,2), &wsaData);
+
     SOCKET serv = socket(AF_INET, SOCK_STREAM, 0);
-    if (serv == INVALID_SOCKET)
-    {
-        printf("socket创建失败\n");
-        return -1;
-    }
-    //补全struct，修复MinGW编译错误
     struct sockaddr_in sin;
     sin.sin_family = AF_INET;
     sin.sin_port = htons(HTTP_PORT);
-    sin.sin_addr.S_un.S_addr = INADDR_ANY;
-
-    if (bind(serv, (struct sockaddr*)&sin, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
-    {
-        printf("bind绑定端口%d失败，端口被占用\n", HTTP_PORT);
-        closesocket(serv);
-        WSACleanup();
-        return -1;
-    }
+    sin.sin_addr.s_addr = INADDR_ANY;
+    bind(serv, (struct sockaddr*)&sin, sizeof(sin));
     listen(serv, 5);
+
     printf("====网页模式已启动，请浏览器访问 http://127.0.0.1:%d ====\n", HTTP_PORT);
     char recv_buf[4096];
 
     while (1)
     {
         SOCKET client = accept(serv, NULL, NULL);
-        if (client == INVALID_SOCKET) continue;
         ZeroMemory(recv_buf, sizeof(recv_buf));
-        recv(client, recv_buf, sizeof(recv_buf) - 1, 0);
+        recv(client, recv_buf, sizeof(recv_buf)-1, 0);
 
         char *url_start = strstr(recv_buf, "GET ");
         char url[2048] = { 0 };
         char op[64] = { 0 };
+        char action[64] = {0};
+        char page_str[32] = "1";
         char msg[256] = { 0 };
 
         if (url_start)
         {
             sscanf(url_start, "GET %s ", url);
             get_param(url, "op=", op);
+            get_param(url, "action=", action);
+            get_param(url, "page=", page_str);
+            int page = atoi(page_str);
+
+            //这里！！函数名修正为 sort_by_sales
             if (strcmp(op, "sort") == 0)
             {
                 sort_by_sales();
@@ -392,25 +484,32 @@ int http_run(void)
             }
             else if (strcmp(op, "save") == 0)
             {
-                if (save_csv("store_cleaned.csv") == 0)
+                if (save_csv("store_clean.csv") == 0)
                     strcpy(msg, "保存成功");
-                else strcpy(msg, "保存失败");
+                else
+                    strcpy(msg, "保存失败");
             }
-        }
-        //堆上分配32KB缓冲区，杜绝栈溢出段错误
-        char *html_buf = (char*)malloc(32*1024);
-        if(html_buf == NULL){
-            closesocket(client);
-            continue;
-        }
-        build_html(html_buf, op, msg);
 
-        char send_header[1024];
-        sprintf(send_header, "HTTP/1.1 200 OK\r\nContent-Type:text/html;charset=utf-8\r\nConnection:close\r\n\r\n");
-        send(client, send_header, (int)strlen(send_header), 0);
-        send(client, html_buf, (int)strlen(html_buf), 0);
+            char *html_buf = (char*)malloc(32 * 1024);
+            if (html_buf == NULL)
+            {
+                closesocket(client);
+                continue;
+            }
+            if(strcmp(action,"stat")==0)
+            {
+                build_stat_html(html_buf, msg);
+            }else{
+                build_page_html(html_buf, page, msg);
+            }
 
-        free(html_buf);
+            char response_header[1024];
+            sprintf(response_header, "HTTP/1.1 200 OK\r\nContent-Type:text/html;charset=utf-8\r\nConnection:close\r\n\r\n");
+            send(client, response_header, strlen(response_header), 0);
+            send(client, html_buf, strlen(html_buf), 0);
+
+            free(html_buf);
+        }
         closesocket(client);
     }
     closesocket(serv);
@@ -418,9 +517,15 @@ int http_run(void)
     return 0;
 }
 
+#endif //#ifdef ENABLE_CREATIVE_HTTP_HTML
+
+
 //==================== main入口 ====================
 int main(void)
 {
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+
     if (load_csv("store_cleaned.csv") != 0)
     {
         printf("读取store_cleaned.csv失败，请确认文件放在程序同目录！\n");
@@ -428,13 +533,19 @@ int main(void)
         return -1;
     }
     printf("成功载入订单，总条数：%d\n", order_cnt);
-    printf("========订单管理系统启动========\n");
-    printf("1 — 网页HTTP模式(浏览器访问127.0.0.1:8080)【仅演示排序保存】\n");
-    printf("2 — 控制台备用模式【完整全部功能】\n");
+
+#ifdef ENABLE_CREATIVE_HTTP_HTML
+    printf("========订单管理系统========\n");
+    printf("1 — 控制台基础模式【完整全部功能，推荐优先使用】\n");
+    printf("2 — 网页创意拓展模式（浏览器访问127.0.0.1:8080）\n");
     printf("请输入选择：");
     int sel;
     scanf("%d", &sel);
     if (sel == 1)
+    {
+        run_console_menu();
+    }
+    else if (sel == 2)
     {
         int ret = http_run();
         if (ret != 0)
@@ -448,10 +559,11 @@ int main(void)
             }
         }
     }
-    else if (sel == 2)
-    {
-        run_console_menu();
-    }
+#else
+    printf("创意网页模组未启用，直接进入控制台基础模式\n");
+    run_console_menu();
+#endif
+
     system("pause");
     return 0;
 }
